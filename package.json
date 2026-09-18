@@ -1,0 +1,22 @@
+{
+  "name": "netflix-household-bypass",
+  "version": "0.1.0",
+  "description": "Modern TypeScript Chrome Extension for Netflix Household Verification Bypass",
+  "author": "Mahesh Sharan (https://github.com/MaheshSharan)",
+  "homepage": "https://github.com/MaheshSharan",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MaheshSharan"
+  },
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build"
+  },
+  "devDependencies": {
+    "@crxjs/vite-plugin": "^2.0.0-beta.28",
+    "@types/chrome": "^0.0.308",
+    "rollup-plugin-copy": "^3.5.0",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.1"
+  }
+}

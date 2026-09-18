@@ -1,0 +1,24 @@
+[
+  {
+    "id": 1,
+    "priority": 100,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||web.prod.cloud.netflix.com/graphql*",
+      "resourceTypes": ["xmlhttprequest", "other", "ping"]
+    }
+  },
+  {
+    "id": 2,
+    "priority": 90,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "*://web.prod.cloud.netflix.com/graphql*",
+      "resourceTypes": ["xmlhttprequest", "other", "ping"]
+    }
+  }
+]

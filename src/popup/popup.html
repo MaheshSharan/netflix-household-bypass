@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Netflix Household Bypass</title>
+  <link rel="stylesheet" href="./popup.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="brand">
+      <span class="logo-n">N</span>
+      <span class="title">Household Bypass</span>
+    </div>
+    <span class="version-tag">v0.1</span>
+  </header>
+
+  <!-- Master Switch Card -->
+  <div class="card">
+    <div class="switch-row">
+      <div class="switch-info">
+        <div class="switch-label">Protection Mode</div>
+        <div class="switch-status active" id="statusText">Bypass Enabled</div>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="toggleSwitch" checked>
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Stats Grid -->
+  <div class="stats-grid">
+    <div class="stat-box">
+      <div class="stat-label">Active Tab</div>
+      <div class="status-badge">
+        <span class="status-dot" id="tabDot"></span>
+        <span id="tabState">Checking...</span>
+      </div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Blocked Checks</div>
+      <div class="stat-value" id="blockedCount">0</div>
+    </div>
+  </div>
+
+  <!-- Activity Logs -->
+  <div class="logs-section">
+    <div class="logs-header">
+      <span class="logs-title">Intercept Activity</span>
+      <button class="logs-clear" id="btnClearLogs">Clear</button>
+    </div>
+    <ul class="logs-list" id="logsList">
+      <li class="empty-logs">No checks intercepted yet</li>
+    </ul>
+  </div>
+
+  <!-- Quick Action -->
+  <button class="btn-reload" id="btnReloadTab">
+    <span class="btn-icon">↻</span> Refresh Netflix Tab
+  </button>
+
+  <script type="module" src="./popup.ts"></script>
+</body>
+</html>
