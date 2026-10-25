@@ -133,6 +133,23 @@ chrome.storage.onChanged.addListener(async (changes, namespace) => {
   if (namespace === 'local' && changes[STORAGE_KEY]) {
     isExtensionEnabled = changes[STORAGE_KEY].newValue !== false;
     await applyBypassRules(isExtensionEnabled);
+
+    // Re-inject content script into open Netflix watch tabs when re-enabled
+    if (isExtensionEnabled) {
+      try {
+        const tabs = await chrome.tabs.query({ url: '*://*.netflix.com/watch/*' });
+        for (const tab of tabs) {
+          if (tab.id) {
+            chrome.scripting.executeScript({
+              target: { tabId: tab.id, allFrames: true },
+              files: ['content.js']
+            }).catch(() => {});
+          }
+        }
+      } catch (err) {
+        console.error('[Background] Failed to re-inject content script:', err);
+      }
+    }
   }
 });
 
