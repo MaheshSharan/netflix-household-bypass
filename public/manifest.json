@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Netflix Household Bypass",
-  "version": "0.1",
+  "version": "0.2.0",
   "author": "Mahesh Sharan",
   "homepage_url": "https://github.com/MaheshSharan",
   "description": "Zero-race TypeScript bypass for Netflix household verification modals and network checks.",

@@ -18,17 +18,33 @@
       if (window.__nfFetchTrapActive) return;
       window.__nfFetchTrapActive = true;
 
+      // Null response that tells Netflix player: no interstitial, allow background playback
+      const CLCS_NULL_RESPONSE = JSON.stringify({
+        data: {
+          clcsInterstitialPlaybackV2: {
+            __typename: 'CLCSEntrypoint',
+            configuration: {
+              __typename: 'CLCSEntrypointConfiguration',
+              allowBackgroundPlayback: true
+            },
+            screen: null
+          }
+        }
+      });
+
       const isHouseholdCheck = (url, body) => {
         if (!url) return false;
         const urlStr = String(url);
-        if (urlStr.includes('web.prod.cloud.netflix.com/graphql') || urlStr.includes('/graphql')) {
-          if (!body) return true;
-          if (typeof body === 'string' && (body.includes('CLCS') || body.includes('Interstitial') || body.includes('household'))) {
-            return true;
-          }
-          return true;
-        }
-        return false;
+        // Must be a graphql endpoint (same-origin or legacy cloud endpoint)
+        if (!urlStr.includes('/graphql')) return false;
+        // Must have a body with CLCS operation name — avoids blocking LinearChannelCheck etc.
+        if (!body) return false;
+        const bodyStr = typeof body === 'string' ? body : '';
+        return (
+          bodyStr.includes('CLCSInterstitialPlaybackAndPostPlayback') ||
+          bodyStr.includes('clcsInterstitialPlaybackV2') ||
+          (bodyStr.includes('CLCS') && bodyStr.includes('Interstitial'))
+        );
       };
 
       // Monkeypatch fetch
@@ -40,7 +56,7 @@
 
         if (isHouseholdCheck(url, body)) {
           window.postMessage({ type: 'NF_BYPASS_BLOCKED_REQUEST', url: String(url), timestamp: Date.now() }, '*');
-          return new Response(JSON.stringify({ data: { clcsInterstitialPlaybackV2: null } }), {
+          return new Response(CLCS_NULL_RESPONSE, {
             status: 200,
             headers: { 'Content-Type': 'application/json' }
           });
@@ -60,7 +76,7 @@
           window.postMessage({ type: 'NF_BYPASS_BLOCKED_REQUEST', url: String(this.__interceptUrl), timestamp: Date.now() }, '*');
           setTimeout(() => {
             Object.defineProperty(this, 'status', { value: 200 });
-            Object.defineProperty(this, 'responseText', { value: JSON.stringify({ data: { clcsInterstitialPlaybackV2: null } }) });
+            Object.defineProperty(this, 'responseText', { value: CLCS_NULL_RESPONSE });
             this.dispatchEvent(new Event('load'));
             this.dispatchEvent(new Event('loadend'));
           }, 0);

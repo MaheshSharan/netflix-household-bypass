@@ -20,5 +20,18 @@
       "urlFilter": "*://web.prod.cloud.netflix.com/graphql*",
       "resourceTypes": ["xmlhttprequest", "other", "ping"]
     }
+  },
+  {
+    "id": 3,
+    "priority": 200,
+    "action": {
+      "type": "block"
+    },
+    "condition": {
+      "urlFilter": "||www.netflix.com/graphql*",
+      "requestMethods": ["post"],
+      "resourceTypes": ["xmlhttprequest", "other", "ping"],
+      "initiatorDomains": ["www.netflix.com"]
+    }
   }
 ]
